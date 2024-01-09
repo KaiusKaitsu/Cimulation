@@ -21,29 +21,27 @@ typedef struct {
 //Simulants live in this array
 Simulant simulants[NUM_SIMULANTS];
 
-void updateDir(Simulant* sim){
-	for (int i = 1; i < NUM_SIMULANTS; ++i) {
-		sim[i].heading += ((double)rand() / RAND_MAX -0.5)*0.2;
-	}
+void updateDir(Simulant sim){
+	sim.heading += ((double)rand() / RAND_MAX -0.5)*0.2;
 }
 
-void updatePos(Simulant* sim) {
-	for (int i = 1; i < NUM_SIMULANTS; ++i) {
-		sim[i].x += SPEED * cos(sim[i].heading);
-		sim[i].x += SPEED * sin(sim[i].heading);
-		
-		//border logic
-		if (sim[i].x<0) sim[i].x = MAP_X;
-		if (sim[i].x>MAP_X) sim[i].x = 0;
-		if (sim[i].y<0) sim[i].y = MAP_Y;
-		if (sim[i].y>MAP_Y) sim[i].y = 0;
 
-	}
+void updatePos(Simulant sim) {
+	sim.x += SPEED * cos(sim.heading);
+	sim.x += SPEED * sin(sim.heading);
+	//border logic
+	if (sim.x<0) sim.x = MAP_X;
+	if (sim.x>MAP_X) sim.x = 0;
+	if (sim.y<0) sim.y = MAP_Y;
+	if (sim.y>MAP_Y) sim.y = 0;
 }
+
 //update all simulants
 void update() {
-	updateDir(Simulant* simulants);
-	updatePos(Simulant* simulants);
+	for (int i = 0; i < NUM_SIMULANTS; ++i) {
+	updateDir(simulants[i]);
+	updatePos(simulants[i]);
+	}
 }
 
 //Visual logic is fond here. First the draw function
@@ -99,7 +97,7 @@ int main(int argc, char* argv[]) {
     // Show all and start 
     gtk_widget_show_all(window);
     gtk_main();
-
+	
     return 0;
 }
 
